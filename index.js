@@ -18,7 +18,8 @@ app.get('/', function (req, res) {
 
 app.post('/', function (req, res) {
     res.statusCode = 200;
-    res.send('hellow');
+    const echo = req.body.entry[0].messaging[0].message.text;
+    res.send(`聊天機器人測試功能: ${echo}`);
     console.log('body: ', req.body);
 });
 
