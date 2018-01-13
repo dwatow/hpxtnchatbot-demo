@@ -19,6 +19,7 @@ const server = http.createServer((req, res) => {
   console.log('---------------------');
   console.log('req.method', req.method);
   console.log('parameters', currUrl.query);
+  console.log('token', currUrl.query["hub.challenge"]);
   res.end(currUrl.query["hub.challenge"]);
   // console.log('---------------------');
   // console.log('req.url["name"]', req.url["name"]);
