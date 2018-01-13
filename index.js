@@ -5,6 +5,8 @@ const PORT = process.env.PORT || 3000;
 var express = require('express');
 var app = express();
 
+app.use(express.bodyParser());
+
 app.get('/', function (req, res) {
     res.statusCode = 200;
     res.send('hellow');
@@ -15,7 +17,7 @@ app.get('/', function (req, res) {
 app.post('/', function (req, res) {
     res.statusCode = 200;
     res.send('hellow');
-    console.log('req: ', req);
+    console.log('body: ', req.body);
 });
 
 app.listen(PORT, function () {
