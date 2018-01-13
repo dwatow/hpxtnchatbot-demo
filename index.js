@@ -20,7 +20,7 @@ app.post('/', function (req, res) {
     res.statusCode = 200;
     const echo = req.body.entry[0].messaging[0].message.text;
     res.send(`聊天機器人測試功能: ${echo}`);
-    console.log('body: ', req.body);
+    console.log('body: ', JSON.parse(req.body));
 });
 
 app.listen(PORT, function () {
