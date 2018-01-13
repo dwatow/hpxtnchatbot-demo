@@ -1,16 +1,16 @@
 const http = require('http');
-const PORT = process.env.PORT || 5000;
+const url = require('url');
+const PORT = process.env.PORT || 3000;
 
 const server = http.createServer((req, res) => {
   res.statusCode = 200;
   res.setHeader('Content-Type', 'text/plain');
-  res.end(`hello world`);
-  console.log('---------------------');
-  console.log('req.query', req.query);
-  console.log('---------------------');
-  console.log('req.url', req.url);
+  // res.end(`hello world`);
   console.log('---------------------');
   console.log('req.method', req.method);
+  console.log('parameters', url.parse(req.url, true).query);
+  // console.log('---------------------');
+  // console.log('req.url["name"]', req.url["name"]);
 });
 
 server.listen(PORT);
