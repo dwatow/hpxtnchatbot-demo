@@ -2,10 +2,10 @@
 // const request = require('request');
 const PORT = process.env.PORT || 3000;
 
-var express = require('express');
-var app = express();
+const express = require('express');
+const app = express();
 
-app.use(express.bodyParser());
+const bodyParser = require('body-parser');
 
 app.get('/', function (req, res) {
     res.statusCode = 200;
