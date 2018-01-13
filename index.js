@@ -15,7 +15,7 @@ app.get('/', function (req, res) {
 app.post('/', function (req, res) {
     res.statusCode = 200;
     res.send('hellow');
-    console.log('body: ', req.body);
+    console.log('req: ', req);
 });
 
 app.listen(PORT, function () {
