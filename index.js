@@ -1,5 +1,5 @@
 
-// const request = require('request');
+const request = require('request');
 const PORT = process.env.PORT || 3000;
 
 const express = require('express');
@@ -18,10 +18,25 @@ app.get('/', function (req, res) {
 
 app.post('/', function (req, res) {
     res.statusCode = 200;
-    const echo = req.body.entry[0].messaging[0].message.text;
-    res.send(`聊天機器人測試功能: ${echo}`);
-    console.log('body: ', JSON.parse(req.body));
-});
+
+    const messaging = req.body.entry[0].messaging[0]
+    const echo = messaging.message.text;
+
+    // res.send(`聊天機器人測試功能: ${echo}`);
+
+    console.log('messaging: ', messaging);
+    request({
+        url: url,
+        method: "POST",
+        json: {
+          "recipient": {
+            "id": messaging.sender
+          },
+          "message": {
+            "text": echo
+          }
+        }
+    });
 
 app.listen(PORT, function () {
   console.log(`Example app listening on port ${PORT}!`);
