@@ -6,6 +6,8 @@ const express = require('express');
 const app = express();
 
 const bodyParser = require('body-parser');
+app.use(bodyParser.json()); // for parsing application/json
+
 
 app.get('/', function (req, res) {
     res.statusCode = 200;
