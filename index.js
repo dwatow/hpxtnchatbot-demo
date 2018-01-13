@@ -8,14 +8,14 @@ var app = express();
 app.get('/', function (req, res) {
     res.statusCode = 200;
     res.send('hellow');
-    console.log(req.body);
+    // console.log(req.body);
 });
 
 
 app.post('/', function (req, res) {
     res.statusCode = 200;
     res.send('hellow');
-    console.log(req.body);
+    console.log('body: ', req.body);
 });
 
 app.listen(PORT, function () {
