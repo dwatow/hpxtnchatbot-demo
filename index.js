@@ -8,9 +8,9 @@ const request = require('request');
 const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 
 app.get('/', function (req, res) {
-    res.statusCode = 200;
+    // res.statusCode = 200;
     verifyToken(req, res);
-    res.send('Hallow');
+    // res.send('Hallow');
     // console.log(req.body);
 });
 
@@ -70,6 +70,9 @@ function verifyToken(req, res) {
             // Responds with '403 Forbidden' if verify tokens do not match
             res.sendStatus(403);
         }
+    }
+    else {
+        res.status(200).send('Hello world');
     }
 }
 
