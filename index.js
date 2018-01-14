@@ -7,11 +7,10 @@ const
 const request = require('request');
 
 const pageToken = {
-    "552871335047242": "EAAaPxZCnJiZCIBALw0ftSE1bzG9GK6NY60x9QTTAaoTFZBSqwucuRXz0VAxWd0X4STzYbS9EUnmamqwL3RrvXeOQNpx1Wx9Tz1ZAiOhfXZA21DthVMuCZAcfESdhWO5zO4Mvgj9dlE70MUvPEGCdyZArS71CkvnFlkL2uHCbBHAZBwZDZD",
-    "270024299718336": "EAAaPxZCnJiZCIBAGGzxZBVPnegT78X4v7lrnJQAdQtuFUvjdEpPUnAMPAqMziBMHPIAbH60tkmlZBKgUW1ri7rsX5lqg3ZBSznPjYHsp9z34eUDvqeZA3YrZAjJWEYbt32H7bZCwKmfXK2JZCMyCi1JOYshvIcQlY6XHRvkNiUsPOYQZDZD"
+    // "552871335047242": "EAAaPxZCnJiZCIBALw0ftSE1bzG9GK6NY60x9QTTAaoTFZBSqwucuRXz0VAxWd0X4STzYbS9EUnmamqwL3RrvXeOQNpx1Wx9Tz1ZAiOhfXZA21DthVMuCZAcfESdhWO5zO4Mvgj9dlE70MUvPEGCdyZArS71CkvnFlkL2uHCbBHAZBwZDZD",
+    "270024299718336": "EAAaPxZCnJiZCIBAGGzxZBVPnegT78X4v7lrnJQAdQtuFUvjdEpPUnAMPAqMziBMHPIAbH60tkmlZBKgUW1ri7rsX5lqg3ZBSznPjYHsp9z34eUDvqeZA3YrZAjJWEYbt32H7bZCwKmfXK2JZCMyCi1JOYshvIcQlY6XHRvkNiUsPOYQZDZD",
+    "552871335047242": "EAACznxPYmxIBAEuZCkojFoo2Rb3ay3ZCb1ldESS8fgakTKcY2ZC7LLGHcI4y8TpgKMq73FEGACEMgfn0ccMuL9WaHbRG3taWYdfgLx11Yr8bctn9Yyd17ZAOi8ZCSCIn6yhC8aZAygZC516MzunaAxrDF4ZC6ljeGZB1CTdUWS6UaOgZDZD"
 }
-
-// const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN || "EAAaPxZCnJiZCIBAHD2X7wHgshOLUTOdLq8zkE25mtZC7aX2FmIZB6UTuF5iA3Bp8lbl5iZAXZBhKZAEAzXwkMpWkMO6vZB9u3TQYH7l9q04F0yD0zwq5kxrWZBul23yxuLqw9xQZBnwDAQZCSk4aIL6KV46iy6YvGzd3meSTX3NXsGfhQZDZD";
 
 app.get('/', verifyToken);
 
@@ -50,6 +49,7 @@ app.post('/', (req, res) => {
     messagingHandler(req, res);
 });
 
+
 function messagingHandler(req, res) {
     let body = req.body;
     // console.log(body.object);
@@ -69,18 +69,20 @@ function messagingHandler(req, res) {
             let sender_psid = webhook_event.sender.id;
             let page_id = webhook_event.recipient.id;
             // console.log('Sender PSID: ' + sender_psid);
+            console.log('page_id: ', page_id);
 
 
             // Check if the event is a message or postback and
             // pass the event to the appropriate handler function
             // console.log(webhook_event.message);
+            senderAction(page_id, sender_psid, webhook_event.message);
+
             if(webhook_event.message) {
                 handleMessage(page_id, sender_psid, webhook_event.message);
             }
             else if(webhook_event.postback) {
                 handlePostback(page_id, sender_psid, webhook_event.postback);
             }
-
         });
 
         // Returns a '200 OK' response to all requests
@@ -90,7 +92,34 @@ function messagingHandler(req, res) {
         // Returns a '404 Not Found' if event is not from a page subscription
         res.sendStatus(404);
     }
+}
 
+function senderAction (page_id, sender_psid, received_message) {
+    // Sends the response message
+    let request_body = {
+        "messaging_type": "RESPONSE",
+        "recipient": {
+            "id": sender_psid
+        },
+        "sender_action": "typing_on"
+    }
+    console.log(request_body);
+
+    request({
+        "uri": "https://graph.facebook.com/v2.6/me/messages",
+        "qs": {
+            "access_token": pageToken[page_id]
+        },
+        "method": "POST",
+        "json": request_body
+    }, (err, res, body) => {
+        if(!err) {
+            console.log('message sent!')
+        }
+        else {
+            console.error("Unable to send message:" + err);
+        }
+    });
 }
 
 // Handles messages events
@@ -98,18 +127,15 @@ function handleMessage(page_id, sender_psid, received_message) {
     let response;
 
     console.log('handleMessage: ', received_message.text);
+
     // Check if the message contains text
     if(received_message.text) {
-
         // Create the payload for a basic text message
         response = {
             "text": `回音: "${received_message.text}"...`
         }
-
-        // Sends the response message
     }
     else if(received_message.attachments) {
-
         // Gets the URL of the message attachment
         let attachment_url = received_message.attachments[0].payload.url;
         response = {
@@ -117,38 +143,53 @@ function handleMessage(page_id, sender_psid, received_message) {
                 "type": "template",
                 "payload": {
                     "template_type": "generic",
-                    "elements": [{
-                        "title": "Is this the right picture?",
-                        "subtitle": "Tap a button to answer.",
-                        "image_url": attachment_url,
-                        "buttons": [{
-                                "type": "postback",
-                                "title": "Yes!",
-                                "payload": "yes",
-                            },
-                            {
-                                "type": "postback",
-                                "title": "No!",
-                                "payload": "no",
-                            }
-                        ],
-                    }]
+                    "elements": [
+                        {
+                            "title": "Is this the right picture?",
+                            "subtitle": "Tap a button to answer.",
+                            "image_url": attachment_url,
+                            "buttons": [{
+                                    "type": "postback",
+                                    "title": "Yes!",
+                                    "payload": "yes",
+                                },
+                                {
+                                    "type": "postback",
+                                    "title": "No!",
+                                    "payload": "no",
+                                }
+                            ],
+                        }
+                    ]
                 }
             }
         }
     }
 
+    // Sends the response message
     callSendAPI(page_id, sender_psid, response);
 }
 
 // Handles messaging_postbacks events
 function handlePostback(page_id, sender_psid, received_postback) {
+    let response;
 
+     // Get the payload for the postback
+     let payload = received_postback.payload;
+
+     // Set the response based on the postback payload
+     if (payload === 'yes') {
+       response = { "text": "Thanks!" }
+     } else if (payload === 'no') {
+       response = { "text": "Oops, try sending another image." }
+     }
+     // Send the message to acknowledge the postback
+     callSendAPI(page_id, sender_psid, response);
 }
 
 // Sends response messages via the Send API
 function callSendAPI(page_id, sender_psid, response) {
-    console.log('handleMessage call callSendAPI');
+    // console.log('handleMessage call callSendAPI');
     // Construct the message body
     let request_body = {
         "messaging_type": "RESPONSE",
@@ -157,10 +198,6 @@ function callSendAPI(page_id, sender_psid, response) {
         },
         "message": response
     }
-
-    // console.log('callSendAPI: ', request_body);
-    // console.log('token', pageToken[page_id]);
-
 
     // Send the HTTP request to the Messenger Platform
     request({
