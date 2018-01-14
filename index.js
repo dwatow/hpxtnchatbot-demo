@@ -6,6 +6,11 @@ const
 
 const request = require('request');
 
+const pageToken = {
+    "552871335047242": "EAAaPxZCnJiZCIBALw0ftSE1bzG9GK6NY60x9QTTAaoTFZBSqwucuRXz0VAxWd0X4STzYbS9EUnmamqwL3RrvXeOQNpx1Wx9Tz1ZAiOhfXZA21DthVMuCZAcfESdhWO5zO4Mvgj9dlE70MUvPEGCdyZArS71CkvnFlkL2uHCbBHAZBwZDZD",
+    "270024299718336": "EAAaPxZCnJiZCIBAGGzxZBVPnegT78X4v7lrnJQAdQtuFUvjdEpPUnAMPAqMziBMHPIAbH60tkmlZBKgUW1ri7rsX5lqg3ZBSznPjYHsp9z34eUDvqeZA3YrZAjJWEYbt32H7bZCwKmfXK2JZCMyCi1JOYshvIcQlY6XHRvkNiUsPOYQZDZD"
+}
+
 // const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN || "EAAaPxZCnJiZCIBAHD2X7wHgshOLUTOdLq8zkE25mtZC7aX2FmIZB6UTuF5iA3Bp8lbl5iZAXZBhKZAEAzXwkMpWkMO6vZB9u3TQYH7l9q04F0yD0zwq5kxrWZBul23yxuLqw9xQZBnwDAQZCSk4aIL6KV46iy6YvGzd3meSTX3NXsGfhQZDZD";
 
 app.get('/', verifyToken);
@@ -42,13 +47,12 @@ function verifyToken(req, res) {
 
 // Creates the endpoint for our webhook
 app.post('/', (req, res) => {
-    console.log('POST');
     messagingHandler(req, res);
 });
 
 function messagingHandler(req, res) {
     let body = req.body;
-    console.log(body.object);
+    // console.log(body.object);
 
     // Checks this is an event from a page subscription
     if(body.object === 'page') {
@@ -59,21 +63,22 @@ function messagingHandler(req, res) {
             // Gets the message. entry.messaging is an array, but
             // will only ever contain one message, so we get index 0
             let webhook_event = entry.messaging[0];
-            console.log(webhook_event);
+            // console.log(webhook_event);
 
             // Get the sender PSID
             let sender_psid = webhook_event.sender.id;
-            console.log('Sender PSID: ' + sender_psid);
+            let page_id = webhook_event.recipient.id;
+            // console.log('Sender PSID: ' + sender_psid);
 
 
             // Check if the event is a message or postback and
             // pass the event to the appropriate handler function
-            console.log(webhook_event.message);
+            // console.log(webhook_event.message);
             if(webhook_event.message) {
-                handleMessage(sender_psid, webhook_event.message);
+                handleMessage(page_id, sender_psid, webhook_event.message);
             }
             else if(webhook_event.postback) {
-                handlePostback(sender_psid, webhook_event.postback);
+                handlePostback(page_id, sender_psid, webhook_event.postback);
             }
 
         });
@@ -89,7 +94,7 @@ function messagingHandler(req, res) {
 }
 
 // Handles messages events
-function handleMessage(sender_psid, received_message) {
+function handleMessage(page_id, sender_psid, received_message) {
     let response;
 
     console.log('handleMessage: ', received_message.text);
@@ -98,40 +103,41 @@ function handleMessage(sender_psid, received_message) {
 
         // Create the payload for a basic text message
         response = {
-            "text": `You sent the message: "${received_message.text}". Now send me an image!`
+            "text": `回音: "${received_message.text}"...`
         }
 
         // Sends the response message
-        callSendAPI(sender_psid, response);
+        callSendAPI(page_id, sender_psid, response);
     }
 }
 
 // Handles messaging_postbacks events
-function handlePostback(sender_psid, received_postback) {
+function handlePostback(page_id, sender_psid, received_postback) {
 
 }
 
 // Sends response messages via the Send API
-function callSendAPI(sender_psid, response) {
+function callSendAPI(page_id, sender_psid, response) {
     console.log('handleMessage call callSendAPI');
     // Construct the message body
     let request_body = {
+        "messaging_type": "RESPONSE",
         "recipient": {
             "id": sender_psid
         },
         "message": response
     }
 
-    console.log('callSendAPI: ', request_body);
-    console.log('token', PAGE_ACCESS_TOKEN);
+    // console.log('callSendAPI: ', request_body);
+    // console.log('token', pageToken[page_id]);
 
 
     // Send the HTTP request to the Messenger Platform
     request({
-        "uri": "https://graph.facebook.com/v2.6/me/messages?access_token=EAAaPxZCnJiZCIBALw0ftSE1bzG9GK6NY60x9QTTAaoTFZBSqwucuRXz0VAxWd0X4STzYbS9EUnmamqwL3RrvXeOQNpx1Wx9Tz1ZAiOhfXZA21DthVMuCZAcfESdhWO5zO4Mvgj9dlE70MUvPEGCdyZArS71CkvnFlkL2uHCbBHAZBwZDZD",
-        // "qs": {
-        //     "access_token": PAGE_ACCESS_TOKEN
-        // },
+        "uri": "https://graph.facebook.com/v2.6/me/messages",
+        "qs": {
+            "access_token": pageToken[page_id]
+        },
         "method": "POST",
         "json": request_body
     }, (err, res, body) => {
