@@ -17,6 +17,7 @@ app.get('/', function (req, res) {
 
 
 app.post('/', function (req, res) {
+    const url = 'https://graph.facebook.com/v2.6/me/messages?access_token=EAAaPxZCnJiZCIBAN6KP15xd660iz5YBh5Wy4kDNEhHIflmtk8fR1dZB2gYdvtcZC4fHI0rZBGBfl4mZA4v9ZAx4UDBML5rCkk4Vun7lUMnodigokyOfyM9qSjXZBD4JiqIrUnym4SX08ixB8lFNZChVG4fBmCf40jGfeeTZCiTTOMkAwZDZD'
     res.statusCode = 200;
 
     const messaging = req.body.entry[0].messaging[0]
