@@ -5,46 +5,9 @@ const
 
 const request = require('request');
 
-const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
+const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN || "EAAaPxZCnJiZCIBABLoK5pguCxfoELCYTu8nZC9ZA1jtXLVIdFAebWUt8FgcpG5ibnVg9sCN1Lx4wry0BX5IkRrsUN2p872yrVALhQgjwl5thBW05ZA3AiS9p8pg9wOe4Jhx3QeJubIT3HWZAopzNZASy3vzCCZC5ypmTZBWfcmiZAm5AZDZD";
 
-app.get('/', function (req, res) {
-    // res.statusCode = 200;
-    verifyToken(req, res);
-    // res.send('Hallow');
-    // console.log(req.body);
-});
-
-//
-// app.post('/', function (req, res) {
-//
-//     const url = 'https://graph.facebook.com/v2.6/me/messages?access_token=EAAaPxZCnJiZCIBAN6KP15xd660iz5YBh5Wy4kDNEhHIflmtk8fR1dZB2gYdvtcZC4fHI0rZBGBfl4mZA4v9ZAx4UDBML5rCkk4Vun7lUMnodigokyOfyM9qSjXZBD4JiqIrUnym4SX08ixB8lFNZChVG4fBmCf40jGfeeTZCiTTOMkAwZDZD';
-//     res.statusCode = 200;
-//
-//     const messaging = req.body.entry[0].messaging[0]
-//     const echo = messaging.message.text;
-//
-//     // res.send(`聊天機器人測試功能: ${echo}`);
-//
-//     console.log('messaging: ', messaging);
-//     request({
-//         url: url,
-//         method: "POST",
-//         json: true,
-//         multipart: {
-//           "recipient": {
-//             "id": messaging.sender
-//           },
-//           "message": {
-//             "text": echo
-//           }
-//         }
-//     });
-// });
-
-// Creates the endpoint for our webhook
-app.post('/', (req, res) => {
-    messagingHandler(req, res);
-});
+app.get('/', verifyToken);
 
 function verifyToken(req, res) {
     let VERIFY_TOKEN = "chris"
@@ -76,8 +39,15 @@ function verifyToken(req, res) {
     }
 }
 
+// Creates the endpoint for our webhook
+app.post('/', (req, res) => {
+    console.log('POST');
+    messagingHandler(req, res);
+});
+
 function messagingHandler(req, res) {
     let body = req.body;
+    console.log(body.object);
 
     // Checks this is an event from a page subscription
     if(body.object === 'page') {
@@ -152,14 +122,15 @@ function callSendAPI(sender_psid, response) {
     }
 
     console.log('callSendAPI: ', request_body);
+    console.log('token', PAGE_ACCESS_TOKEN);
 
 
     // Send the HTTP request to the Messenger Platform
     request({
-        "uri": "https://graph.facebook.com/v2.9/me/messages",
-        "qs": {
-            "access_token": PAGE_ACCESS_TOKEN
-        },
+        "uri": "https://graph.facebook.com/v2.6/me/messages?access_token=" + PAGE_ACCESS_TOKEN,
+        // "qs": {
+        //     "access_token": PAGE_ACCESS_TOKEN
+        // },
         "method": "POST",
         "json": request_body
     }, (err, res, body) => {
