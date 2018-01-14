@@ -8,7 +8,8 @@ const request = require('request');
 const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 
 app.get('/', function (req, res) {
-    res.statusCode = 201;
+    res.statusCode = 200;
+    verifyToken(req, res);
     res.send('Hallow');
     // console.log(req.body);
 });
@@ -42,12 +43,11 @@ app.get('/', function (req, res) {
 
 // Creates the endpoint for our webhook
 app.post('/', (req, res) => {
-    verifyToken(req, res);
     messagingHandler(req, res);
 });
 
 function verifyToken(req, res) {
-    let VERIFY_TOKEN = "<YOUR_VERIFY_TOKEN>"
+    let VERIFY_TOKEN = "chris"
 
     // Parse the query params
     let mode = req.query['hub.mode'];
@@ -153,7 +153,7 @@ function callSendAPI(sender_psid, response) {
 
     // Send the HTTP request to the Messenger Platform
     request({
-        "uri": "https://graph.facebook.com/v2.6/me/messages",
+        "uri": "https://graph.facebook.com/v2.9/me/messages",
         "qs": {
             "access_token": PAGE_ACCESS_TOKEN
         },
