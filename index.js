@@ -1,3 +1,4 @@
+'use strict';
 const
     express = require('express'),
     bodyParser = require('body-parser'),
@@ -5,7 +6,7 @@ const
 
 const request = require('request');
 
-const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN || "EAAaPxZCnJiZCIBABLoK5pguCxfoELCYTu8nZC9ZA1jtXLVIdFAebWUt8FgcpG5ibnVg9sCN1Lx4wry0BX5IkRrsUN2p872yrVALhQgjwl5thBW05ZA3AiS9p8pg9wOe4Jhx3QeJubIT3HWZAopzNZASy3vzCCZC5ypmTZBWfcmiZAm5AZDZD";
+const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN || "EAAaPxZCnJiZCIBAHD2X7wHgshOLUTOdLq8zkE25mtZC7aX2FmIZB6UTuF5iA3Bp8lbl5iZAXZBhKZAEAzXwkMpWkMO6vZB9u3TQYH7l9q04F0yD0zwq5kxrWZBul23yxuLqw9xQZBnwDAQZCSk4aIL6KV46iy6YvGzd3meSTX3NXsGfhQZDZD";
 
 app.get('/', verifyToken);
 
