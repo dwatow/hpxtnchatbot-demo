@@ -6,7 +6,7 @@ const
 
 const request = require('request');
 
-const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN || "EAAaPxZCnJiZCIBAHD2X7wHgshOLUTOdLq8zkE25mtZC7aX2FmIZB6UTuF5iA3Bp8lbl5iZAXZBhKZAEAzXwkMpWkMO6vZB9u3TQYH7l9q04F0yD0zwq5kxrWZBul23yxuLqw9xQZBnwDAQZCSk4aIL6KV46iy6YvGzd3meSTX3NXsGfhQZDZD";
+// const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN || "EAAaPxZCnJiZCIBAHD2X7wHgshOLUTOdLq8zkE25mtZC7aX2FmIZB6UTuF5iA3Bp8lbl5iZAXZBhKZAEAzXwkMpWkMO6vZB9u3TQYH7l9q04F0yD0zwq5kxrWZBul23yxuLqw9xQZBnwDAQZCSk4aIL6KV46iy6YvGzd3meSTX3NXsGfhQZDZD";
 
 app.get('/', verifyToken);
 
@@ -128,7 +128,7 @@ function callSendAPI(sender_psid, response) {
 
     // Send the HTTP request to the Messenger Platform
     request({
-        "uri": "https://graph.facebook.com/v2.6/me/messages?access_token=" + PAGE_ACCESS_TOKEN,
+        "uri": "https://graph.facebook.com/v2.6/me/messages?access_token=EAAaPxZCnJiZCIBALw0ftSE1bzG9GK6NY60x9QTTAaoTFZBSqwucuRXz0VAxWd0X4STzYbS9EUnmamqwL3RrvXeOQNpx1Wx9Tz1ZAiOhfXZA21DthVMuCZAcfESdhWO5zO4Mvgj9dlE70MUvPEGCdyZArS71CkvnFlkL2uHCbBHAZBwZDZD",
         // "qs": {
         //     "access_token": PAGE_ACCESS_TOKEN
         // },
