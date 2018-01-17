@@ -243,44 +243,42 @@ function handleMessage(page_id, sender_psid, received_message) {
                     "image_url": "http://lorempixel.com/800/500/food/",
                     "default_action": {
                         "type": "web_url",
-                        "url": "https://www.facebook.com",
+                        "url": "https://www.facebook.com/hpxtainan/",
                         "messenger_extensions": false,
-                        "webview_height_ratio": "COMPACT"
+                        "webview_height_ratio": "TALL"
                     },
                     "buttons": [{
-                        "title": "View",
                         "type": "web_url",
-                        "url": "https://www.facebook.com",
-                        "messenger_extensions": true,
-                        "webview_height_ratio": "tall",
-                        // "fallback_url": "https://peterssendreceiveapp.ngrok.io/"
+                        "url": "https://www.google.com",
+                        "title": "Google",
                     }]
                 }
 
-                let listTemplate2 = {
-                    "title": "Classic Blue T-Shirt",
-                    "image_url": "http://lorempixel.com/800/500/food/",
-                    "subtitle": "100% Cotton, 200% Comfortable",
-                    "default_action": {
-                        "type": "web_url",
-                        "url": "https://www.facebook.com",
-                        "messenger_extensions": true,
-                        "webview_height_ratio": "tall",
-                        "fallback_url": "https://www.facebook.com"
-                    },
-                    "buttons": [{
-                        "title": "Shop Now",
-                        "type": "web_url",
-                        "url": "https://www.facebook.com",
-                        "messenger_extensions": true,
-                        "webview_height_ratio": "tall",
-                        "fallback_url": "https://www.facebook.com"
-                    }]
-                }
+                // let listTemplate2 = {
+                //     "title": "Classic Blue T-Shirt",
+                //     "image_url": "http://lorempixel.com/800/500/food/",
+                //     "subtitle": "100% Cotton, 200% Comfortable",
+                //     "default_action": {
+                //         "type": "web_url",
+                //         "url": "https://www.facebook.com",
+                //         "messenger_extensions": true,
+                //         "webview_height_ratio": "tall",
+                //         "fallback_url": "https://www.facebook.com"
+                //     },
+                //     "buttons": [{
+                //         "title": "Shop Now",
+                //         "type": "web_url",
+                //         "url": "https://www.facebook.com",
+                //         "messenger_extensions": true,
+                //         "webview_height_ratio": "tall",
+                //         "fallback_url": "https://www.facebook.com"
+                //     }]
+                // }
 
 
                 template["payload"] = {
-                    "template_type": "generic",
+                    "template_type": "list",
+                    "top_element_style": "LARGE",
                     "elements": [
                         listTemplate
                     ]
@@ -390,7 +388,17 @@ function callSendAPI(page_id, sender_psid, response) {
         "json": request_body
     }, (err, res, body) => {
         if(!err) {
-            console.log('message sent!');
+            if (body.error) {
+                console.log('error sent!');
+
+                response = {
+                    "text": `error type: ${body.error.type} \ncode: ${body.error.code} \nmessage: ${body.error.message}`
+                }
+                callSendAPI(page_id, sender_psid, response);
+            }
+            else {
+                console.log('message sent!');
+            }
         }
         else {
             console.error("Unable to send message:" + err);
