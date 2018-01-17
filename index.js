@@ -154,43 +154,43 @@ function handleMessage(page_id, sender_psid, received_message) {
                     "content_type": "text",
                     "title": "一般型範本",
                     "payload": "Generic template",
-                    "image_url": "http://lorempixel.com/400/200/food/"
+                    "image_url": "https://lorempixel.com/400/200/food/"
                 },
                 {
                     "content_type": "text",
                     "title": "清單範本",
                     "payload": "List template",
-                    "image_url": "http://lorempixel.com/400/200/food/"
+                    "image_url": "https://lorempixel.com/400/200/food/"
                 },
                 {
                     "content_type": "text",
                     "title": "按鈕範本",
                     "payload": "Button template",
-                    "image_url": "http://lorempixel.com/400/200/food/"
+                    "image_url": "https://lorempixel.com/400/200/food/"
                 },
                 {
                     "content_type": "text",
                     "title": "開放社交關係圖範本",
                     "payload": "Open Graph template",
-                    "image_url": "http://lorempixel.com/400/200/food/"
+                    "image_url": "https://lorempixel.com/400/200/food/"
                 },
                 {
                     "content_type": "text",
                     "title": "收據範本",
                     "payload": "Receipt template",
-                    "image_url": "http://lorempixel.com/400/200/food/"
+                    "image_url": "https://lorempixel.com/400/200/food/"
                 },
                 {
                     "content_type": "text",
                     "title": "航空公司範本",
                     "payload": "Airline templates",
-                    "image_url": "http://lorempixel.com/400/200/food/"
+                    "image_url": "https://lorempixel.com/400/200/food/"
                 },
                 {
                     "content_type": "text",
                     "title": "媒體範本",
                     "payload": "Media template",
-                    "image_url": "http://lorempixel.com/400/200/food/"
+                    "image_url": "https://lorempixel.com/400/200/food/"
                 }
             ]
         }
@@ -203,11 +203,11 @@ function handleMessage(page_id, sender_psid, received_message) {
             if(msg_text == "一般型範本") {
                 let genericTemplate = {
                     "title": "一般型範本",
-                    "image_url": "http://lorempixel.com/400/200/food/",
+                    "image_url": "https://lorempixel.com/400/200/food/",
                     "subtitle": "可以幫助你找到你想找的",
                     "default_action": {
                         "type": "web_url",
-                        "url": "https://www.facebook.com",
+                        "url": "https://www.facebook.com/hpxtainan/",
                         "messenger_extensions": false,
                         "webview_height_ratio": "FULL"
                     },
@@ -237,51 +237,113 @@ function handleMessage(page_id, sender_psid, received_message) {
                 };
             }
             else if(msg_text == "清單範本") {
-                let listTemplate = {
-                    "title": "清單範本",
-                    "subtitle": "副標題",
-                    "image_url": "http://lorempixel.com/800/500/food/",
-                    "default_action": {
-                        "type": "web_url",
-                        "url": "https://www.facebook.com/hpxtainan/",
-                        "messenger_extensions": false,
-                        "webview_height_ratio": "TALL"
-                    },
-                    "buttons": [{
-                        "type": "web_url",
-                        "url": "https://www.google.com",
-                        "title": "Google",
-                    }]
-                }
+                // let listTemplate = {
+                //     "title": "清單範本",
+                //     "subtitle": "副標題",
+                //     "image_url": "https://lorempixel.com/800/500/food/",
+                //     "default_action": {
+                //       "title": "Classic T-Shirt Collection",
+                //       "subtitle": "See all our colors",
+                //       "image_url": "https://www.facebook.com/hpxtainan/",
+                //       "buttons": [
+                //         {
+                //           "title": "View",
+                //           "type": "web_url",
+                //           "url": "https://www.facebook.com/hpxtainan/",
+                //           "messenger_extensions": true,
+                //           "webview_height_ratio": "tall",
+                //           "fallback_url": "https://www.facebook.com/hpxtainan/"
+                //         }
+                //       ]
+                //     }
+                // }
 
                 // let listTemplate2 = {
                 //     "title": "Classic Blue T-Shirt",
-                //     "image_url": "http://lorempixel.com/800/500/food/",
+                //     "image_url": "https://lorempixel.com/800/500/food/",
                 //     "subtitle": "100% Cotton, 200% Comfortable",
                 //     "default_action": {
                 //         "type": "web_url",
-                //         "url": "https://www.facebook.com",
+                //         "url": "https://www.facebook.com/hpxtainan/",
                 //         "messenger_extensions": true,
                 //         "webview_height_ratio": "tall",
-                //         "fallback_url": "https://www.facebook.com"
+                //         "fallback_url": "https://www.facebook.com/hpxtainan/"
                 //     },
                 //     "buttons": [{
                 //         "title": "Shop Now",
                 //         "type": "web_url",
-                //         "url": "https://www.facebook.com",
+                //         "url": "https://www.facebook.com/hpxtainan/",
                 //         "messenger_extensions": true,
                 //         "webview_height_ratio": "tall",
-                //         "fallback_url": "https://www.facebook.com"
+                //         "fallback_url": "https://www.facebook.com/hpxtainan/"
                 //     }]
                 // }
 
 
                 template["payload"] = {
                     "template_type": "list",
-                    "top_element_style": "LARGE",
+                    "top_element_style": "large",
                     "elements": [
-                        listTemplate
-                    ]
+                        {
+                          "title": "有圖有按鈕",
+                          "image_url": "https://lorempixel.com/800/500/food/",
+                          "subtitle": "See all our colors",
+                          "default_action": {
+                            "type": "web_url",
+                            "url": "https://www.facebook.com/hpxtainan/",
+                            "webview_height_ratio": "tall"
+                          },
+                          "buttons": [
+                            {
+                              "title": "Shop Now",
+                              "type": "web_url",
+                              "url": "https://www.facebook.com/hpxtainan/",
+                              "webview_height_ratio": "tall"
+                            }
+                          ]
+                        },
+                        {
+                          "title": "無圖",
+                          // "image_url": "https://lorempixel.com/800/500/food/",
+                          "subtitle": "100% Cotton, 200% Comfortable",
+                          "default_action": {
+                            "type": "web_url",
+                            "url": "https://www.facebook.com/hpxtainan/",
+                            "webview_height_ratio": "tall"
+                          },
+                          "buttons": [
+                            {
+                              "title": "Shop Now",
+                              "type": "web_url",
+                              "url": "https://www.facebook.com/hpxtainan/",
+                              "webview_height_ratio": "tall"
+                            }
+                          ]
+                        },
+                        {
+                          "title": "無按鈕",
+                          "image_url": "https://lorempixel.com/800/500/food/",
+                          "subtitle": "100% Cotton, 200% Comfortable",
+                          "default_action": {
+                            "type": "web_url",
+                            "url": "https://www.facebook.com/hpxtainan/",
+                            "webview_height_ratio": "tall"
+                          }
+                          // "buttons": [
+                          //   {
+                          //     "title": "Shop Now",
+                          //     "type": "web_url",
+                          //     "url": "https://www.facebook.com/hpxtainan/",
+                          //     "webview_height_ratio": "tall"
+                          //   }
+                          // ]
+                        }
+                    ],
+                    "buttons": [{
+                      "title": "View More",
+                      "type": "postback",
+                      "payload": "payload"
+                    }]
                 }
             }
             else {
@@ -295,13 +357,13 @@ function handleMessage(page_id, sender_psid, received_message) {
                     "content_type": "text",
                     "title": "看地圖",
                     "payload": "看地圖",
-                    "image_url": "http://lorempixel.com/400/200/food/"
+                    "image_url": "https://lorempixel.com/400/200/food/"
                 },
                 {
                     "content_type": "text",
                     "title": "看訊息範本",
                     "payload": "template",
-                    "image_url": "http://lorempixel.com/400/200/food/"
+                    "image_url": "https://lorempixel.com/400/200/food/"
                 }
             ]
         }
