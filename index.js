@@ -625,7 +625,6 @@ function handleMessage(page_id, sender_psid, received_message) {
                     "total_price": "14003",
                     "currency": "USD"
                 }
-                //---
             }
             else if(msg_text === "航空公司更新範本") {
                 template["payload"] = {
@@ -659,6 +658,26 @@ function handleMessage(page_id, sender_psid, received_message) {
             else {
                 respons_message["text"] = "這個還沒有實作!!!";
                 delete respons_message.attachment;
+                respons_message["quick_replies"] = [{
+                        "content_type": "text",
+                        "title": "看地圖",
+                        "payload": "看地圖",
+                        "image_url": "https://lorempixel.com/400/200/food/"
+                    },
+                    {
+                        "content_type": "text",
+                        "title": "看訊息範本",
+                        "payload": "template",
+                        "image_url": "https://lorempixel.com/400/200/food/"
+                    },
+                    {
+                        "content_type": "text",
+                        "title": "看按鈕",
+                        "payload": "Buttons",
+                        "image_url": "https://lorempixel.com/400/200/food/"
+                    }
+                ]
+
             }
         }
         else if((/看按鈕/ig).test(msg_text)) {
@@ -761,7 +780,7 @@ function handleMessage(page_id, sender_psid, received_message) {
                 }
                 template["payload"] = {
                     "template_type": "button",
-                    "text": "網址按鈕!!",
+                    "text": "回傳按鈕!!",
                     "buttons": [
                         payloadButton,
                         payloadButton,
@@ -769,8 +788,22 @@ function handleMessage(page_id, sender_psid, received_message) {
                     ]
                 }
             }
-            // else if (msg_text === "分享按鈕") {
-            // }
+            else if(msg_text === "分享按鈕") {
+                const share = {
+                    "type": "element_share"
+                }
+                template["payload"] = {
+                    "template_type": "generic",
+                    "elements": [{
+                        "title": "這是?",
+                        "subtitle": "你覺得？",
+                        "image_url": "https://lorempixel.com/800/800/food/",
+                        "buttons": [
+                            share
+                        ],
+                    }]
+                }
+            }
             // else if (msg_text === "購買按鈕") {
             // }
             else if(msg_text === "通話按鈕") {
@@ -800,6 +833,26 @@ function handleMessage(page_id, sender_psid, received_message) {
                 respons_message["text"] = "這個還沒有實作!!!";
                 delete respons_message.attachment;
             }
+
+            // respons_message["quick_replies"] = [{
+            //         "content_type": "text",
+            //         "title": "看地圖",
+            //         "payload": "看地圖",
+            //         "image_url": "https://lorempixel.com/400/200/food/"
+            //     },
+            //     {
+            //         "content_type": "text",
+            //         "title": "看訊息範本",
+            //         "payload": "template",
+            //         "image_url": "https://lorempixel.com/400/200/food/"
+            //     },
+            //     {
+            //         "content_type": "text",
+            //         "title": "看按鈕",
+            //         "payload": "Buttons",
+            //         "image_url": "https://lorempixel.com/400/200/food/"
+            //     }
+            // ]
         }
         else {
             respons_message["text"] = `回音: "${msg_text}"...`
@@ -864,33 +917,52 @@ function handleMessage(page_id, sender_psid, received_message) {
 
 // Handles messaging_postbacks events
 function handlePostback(page_id, sender_psid, received_postback) {
-    let response;
+    let respons_message;
 
     // Get the payload for the postback
     let payload = received_postback.payload;
 
-    // Set the response based on the postback payload
+    // Set the respons_message based on the postback payload
     if(payload === 'yes') {
-        response = {
+        respons_message = {
             "text": "Thanks!"
         }
     }
     else if(payload === 'no') {
-        response = {
+        respons_message = {
             "text": "Oops, try sending another image."
         }
     }
     else {
-        response = {
+        respons_message = {
             "text": "沒有處理這個 payload 的 code"
         }
     }
+    respons_message["quick_replies"] = [{
+            "content_type": "text",
+            "title": "看地圖",
+            "payload": "看地圖",
+            "image_url": "https://lorempixel.com/400/200/food/"
+        },
+        {
+            "content_type": "text",
+            "title": "看訊息範本",
+            "payload": "template",
+            "image_url": "https://lorempixel.com/400/200/food/"
+        },
+        {
+            "content_type": "text",
+            "title": "看按鈕",
+            "payload": "Buttons",
+            "image_url": "https://lorempixel.com/400/200/food/"
+        }
+    ]
     // Send the message to acknowledge the postback
-    callSendAPI(page_id, sender_psid, response);
+    callSendAPI(page_id, sender_psid, respons_message);
 }
 
 // Sends response messages via the Send API
-function callSendAPI(page_id, sender_psid, response) {
+function callSendAPI(page_id, sender_psid, respons_message) {
     // console.log('handleMessage call callSendAPI');
     // Construct the message body
     let request_body = {
@@ -898,9 +970,9 @@ function callSendAPI(page_id, sender_psid, response) {
         "recipient": {
             "id": sender_psid
         },
-        "message": response
+        "message": respons_message
     }
-    console.log(request_body);
+    console.log(JSON.stringify(request_body));
 
     // Send the HTTP request to the Messenger Platform
     request({
@@ -915,10 +987,10 @@ function callSendAPI(page_id, sender_psid, response) {
             if(body.error) {
                 console.log('error sent!');
 
-                response = {
+                respons_message = {
                     "text": `error type: ${body.error.type} \ncode: ${body.error.code} \nmessage: ${body.error.message}`
                 }
-                callSendAPI(page_id, sender_psid, response);
+                callSendAPI(page_id, sender_psid, respons_message);
             }
             else {
                 console.log('message sent!');
