@@ -30,7 +30,7 @@ function match(keyword, respons_message) {
       "image_url": "https://lorempixel.com/400/200/food/"
     }
   ]
-  console.log(respons_message);
+  // console.log(respons_message);
   return respons_message
 }
 
