@@ -1,6 +1,5 @@
-const callSendAPI = require('../senderAction')
 // Handles messaging_postbacks events
-module.exports = function handlePostback(page_id, sender_psid, received_postback) {
+module.exports = function handlePostback(received_postback) {
     let respons_message;
 
     // Get the payload for the postback
@@ -42,5 +41,5 @@ module.exports = function handlePostback(page_id, sender_psid, received_postback
         }
     ]
     // Send the message to acknowledge the postback
-    callSendAPI(page_id, sender_psid, respons_message);
+    return respons_message;
 }

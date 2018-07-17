@@ -1,18 +1,15 @@
 const request = require('request')
-// const PAGE_ACCESS_TOKEN = ;
 
-module.exports = function senderAction(sender_psid, received_message) {
+module.exports = function senderAction(sender_psid) {
   // Sends the response message
+
   let request_body = {
     "messaging_type": "RESPONSE",
     "recipient": {
       "id": sender_psid
     },
-    "message": received_message,
-    // "sender_action": "typing_on"
+    "sender_action": "typing_on"
   }
-  // console.log(process.env.PAGE_ACCESS_TOKEN);
-  // console.log(PAGE_ACCESS_TOKEN);
 
   request({
     "uri": "https://graph.facebook.com/v2.6/me/messages",
@@ -23,8 +20,18 @@ module.exports = function senderAction(sender_psid, received_message) {
     "json": request_body
   }, (err, res, body) => {
     if (!err) {
-      console.log('sender action!');
-      console.log(body);
+
+      if(body.error) {
+          console.log('error sent!');
+
+          respons_message = {
+              "text": `error type: ${body.error.type} \ncode: ${body.error.code} \nmessage: ${body.error.message}`
+          }
+          callSendAPI(sender_psid, respons_message);
+      }
+      else {
+        console.log('sender action!');
+      }
     } else {
       console.error("Unable to send message:" + err);
     }

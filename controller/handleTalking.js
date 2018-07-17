@@ -1,6 +1,7 @@
 const senderAction = require('../middleware/senderAction')
 const handleMessage = require('../middleware/handleMessage')
 const handlePostback = require('../middleware/handlePostback')
+const callSendAPI = require('../middleware/callSendAPI')
 
 // module.exports = function handleTalking (req, res) {
 //     userTalking(req, res);
@@ -19,15 +20,16 @@ module.exports = function userTalking(req, res) {
       // Gets the message. entry.messaging is an array, but
       // will only ever contain one message, so we get index 0
       let webhook_event = entry.messaging.shift();
-      console.log('---------------');
-      console.log('webhook event: ');
-      console.log(JSON.stringify(webhook_event));
-      console.log('---------------');
+      // console.log('---------------');
+      // console.log('webhook event: ');
+      // console.log(JSON.stringify(webhook_event));
+      // console.log('---------------');
 
       // Get the sender PSID
       let sender_psid = webhook_event.sender.id;
+      senderAction(sender_psid);
       // let page_id = webhook_event.recipient.id;
-      // console.log('Sender PSID: ' + sender_psid);
+      console.log('Sender PSID: ' + sender_psid);
       // console.log('page_id: ', page_id);
 
 
@@ -38,15 +40,14 @@ module.exports = function userTalking(req, res) {
       // var message = {
       //   text: webhook_event.message.text
       // }
-      // senderAction(sender_psid, message);
-
       if (webhook_event.message) {
         console.log('message');
-        handleMessage(sender_psid, webhook_event.message);
+        var respons_message = handleMessage(webhook_event.message);
       } else if (webhook_event.postback) {
         console.log('post back');
-        handlePostback(sender_psid, webhook_event.postback);
+        var respons_message = handlePostback(webhook_event.postback);
       }
+      callSendAPI(sender_psid, respons_message);
     });
 
     // Returns a '200 OK' response to all requests

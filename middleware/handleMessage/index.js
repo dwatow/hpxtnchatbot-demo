@@ -1,4 +1,3 @@
-const callSendAPI = require('../senderAction')
 const keywordMap = require('./keywordMap')
 
 
@@ -31,22 +30,28 @@ function match(keyword, respons_message) {
       "image_url": "https://lorempixel.com/400/200/food/"
     }
   ]
+  console.log(respons_message);
   return respons_message
 }
 
 // Handles messages events
-module.exports = function handleMessage(sender_psid, received_message) {
+module.exports = function handleMessage(received_message) {
   let respons_message = {};
 
   console.log('handleMessage: ', received_message.text);
 
+  // Sends the response message
+  // console.log('-----------------');
+  // console.log(JSON.stringify(respons_message));
+  // console.log('-----------------');
+
   // Check if the message contains text
   if (received_message.text) {
-    respons_message = match(received_message.text, respons_message)
+    return match(received_message.text, respons_message)
   } else if (received_message.attachments) {
     // Gets the URL of the message attachment
     let attachment_url = received_message.attachments[0].payload.url;
-    respons_message = {
+    return {
       "attachment": {
         "type": "template",
         "payload": {
@@ -71,10 +76,4 @@ module.exports = function handleMessage(sender_psid, received_message) {
       }
     }
   }
-
-  // Sends the response message
-  console.log('-----------------');
-  console.log(JSON.stringify(respons_message));
-  console.log('-----------------');
-  callSendAPI(sender_psid, respons_message);
 }
