@@ -20,10 +20,6 @@ module.exports = function userTalking(req, res) {
       // Gets the message. entry.messaging is an array, but
       // will only ever contain one message, so we get index 0
       let webhook_event = entry.messaging.shift();
-      // console.log('---------------');
-      // console.log('webhook event: ');
-      // console.log(JSON.stringify(webhook_event));
-      // console.log('---------------');
 
       // Get the sender PSID
       let sender_psid = webhook_event.sender.id;
@@ -32,7 +28,6 @@ module.exports = function userTalking(req, res) {
       console.log('Sender PSID: ' + sender_psid);
       // console.log('page_id: ', page_id);
 
-
       // Check if the event is a message or postback and
       // pass the event to the appropriate handler function
 
@@ -40,12 +35,15 @@ module.exports = function userTalking(req, res) {
       // var message = {
       //   text: webhook_event.message.text
       // }
+      console.log(webhook_event.message);
+
+      var respons_message;
       if (webhook_event.message) {
         console.log('message');
-        var respons_message = handleMessage(webhook_event.message);
+        respons_message = handleMessage(webhook_event.message);
       } else if (webhook_event.postback) {
         console.log('post back');
-        var respons_message = handlePostback(webhook_event.postback);
+        respons_message = handlePostback(webhook_event.postback);
       }
       callSendAPI(sender_psid, respons_message);
     });

@@ -4,8 +4,9 @@ const keywordMap = require('./keywordMap')
 function match(keyword, respons_message) {
   for (let pattern in keywordMap) {
     const req = new RegExp(pattern, 'i')
+    // console.log(pattern, req.test(keyword));
     if (req.test(keyword)) {
-      return keywordMap[pattern](respons_message)
+      return keywordMap[pattern](keyword, respons_message)
     }
   }
 
