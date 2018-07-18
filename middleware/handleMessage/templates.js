@@ -2,7 +2,6 @@ module.exports = function(msg_text, respons_message) {
   let template = {
     "type": "template"
   };
-  respons_message["attachment"] = template;
 
   if (msg_text === "一般型範本") {
     let genericElement = {
@@ -106,7 +105,7 @@ module.exports = function(msg_text, respons_message) {
       "buttons": [{
           "type": "web_url",
           "url": "https://www.google.com",
-          "title": "Goodle"
+          "title": "Google"
         },
         {
           "type": "web_url",
@@ -141,19 +140,24 @@ module.exports = function(msg_text, respons_message) {
         // openGraphElementMayday
       ]
     }
-  } else if (msg_text === "媒體範本") {
-    const mediaElement = {
-      "media_type": "image",
-      // "url": "<FACEBOOK_URL>"
-      "url": "https://www.facebook.com/photo.php?fbid=2653420547347&set=a.1486469894310.70355.1610812382&type=3&theater"
-    };
-
-    template["payload"] = {
-      "template_type": "media",
-      "elements": [
-        mediaTemplate
-      ]
-    }
+  // } else if (msg_text === "媒體範本") {
+  //   const mediaElement = {
+  //     "media_type": "image",
+  //     "attachment_id": "a.386114131442685.100799.270024299718336/386114721442626",
+  //     //"https://www.facebook.com/hpxtainan/photos/a.386114131442685.100799.270024299718336/386114721442626/?type=3&theater"
+  //     //https://business.facebook.com/<PAGE_NAME>/photos/<NUMERIC_ID>
+  //
+  //
+  //   };
+  //
+  //   template["payload"] = {
+  //     "template_type": "image",
+  //     "elements": [
+  //       mediaElement,
+  //       mediaElement,
+  //       mediaElement
+  //     ]
+  //   }
   } else if (msg_text === "收據範本") {
     template["payload"] = {
       "template_type": "receipt",
@@ -431,9 +435,13 @@ module.exports = function(msg_text, respons_message) {
         }
       }
     }
+  }
+
+
+  if (typeof template['payload'] !== 'undefined') {
+    respons_message["attachment"] = template;
   } else {
     respons_message["text"] = "這個還沒有實作!!!";
-    delete respons_message.attachment;
     respons_message["quick_replies"] = [{
         "content_type": "text",
         "title": "看地圖",

@@ -8,6 +8,7 @@ const callSendAPI = require('../middleware/callSendAPI')
 // }
 
 module.exports = function userTalking(req, res) {
+  console.log('> userTalking');
   let body = req.body;
   // console.log(body.object);
 
@@ -23,9 +24,9 @@ module.exports = function userTalking(req, res) {
 
       // Get the sender PSID
       let sender_psid = webhook_event.sender.id;
-      senderAction(sender_psid);
+      // senderAction(sender_psid);
       // let page_id = webhook_event.recipient.id;
-      console.log('Sender PSID: ' + sender_psid);
+      console.log('> Sender PSID: ' + sender_psid);
       // console.log('page_id: ', page_id);
 
       // Check if the event is a message or postback and
@@ -39,10 +40,8 @@ module.exports = function userTalking(req, res) {
 
       var respons_message;
       if (webhook_event.message) {
-        console.log('message');
         respons_message = handleMessage(webhook_event.message);
       } else if (webhook_event.postback) {
-        console.log('post back');
         respons_message = handlePostback(webhook_event.postback);
       }
       callSendAPI(sender_psid, respons_message);

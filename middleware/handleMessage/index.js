@@ -9,8 +9,8 @@ const keywordMap = {
 function match(keyword, respons_message) {
   for (let pattern in keywordMap) {
     const req = new RegExp(pattern, 'i')
-    // console.log(pattern, req.test(keyword));
     if (req.test(keyword)) {
+      console.log('> > pattern: ', pattern);
       return keywordMap[pattern](keyword, respons_message)
     }
   }
@@ -42,14 +42,15 @@ function match(keyword, respons_message) {
 
 // Handles messages events
 module.exports = function handleMessage(received_message) {
+  console.log('> > message');
   let respons_message = {};
 
-  console.log('handleMessage: ', received_message.text);
+  console.log('> > handleMessage: ', received_message.text);
 
   // Sends the response message
-  // console.log('-----------------');
+  // console.log('> > -----------------');
   // console.log(JSON.stringify(respons_message));
-  // console.log('-----------------');
+  // console.log('> > -----------------');
 
   // Check if the message contains text
   if (received_message.text) {

@@ -2,7 +2,6 @@ module.exports = function(msg_text, respons_message) {
   let template = {
     "type": "template"
   };
-  respons_message["attachment"] = template;
 
   if (msg_text === "網址按鈕") {
     const urlButtonGoogle = {
@@ -91,29 +90,31 @@ module.exports = function(msg_text, respons_message) {
   // }
   // else if (msg_text === "玩遊戲按鈕") {
   // }
-  else {
-    respons_message["text"] = "這個還沒有實作!!!";
-    delete respons_message.attachment;
-  }
-  return respons_message
 
-  // respons_message["quick_replies"] = [{
-  //         "content_type": "text",
-  //         "title": "看地圖",
-  //         "payload": "看地圖",
-  //         "image_url": "https://lorempixel.com/400/200/food/"
-  //     },
-  //     {
-  //         "content_type": "text",
-  //         "title": "看訊息範本",
-  //         "payload": "template",
-  //         "image_url": "https://lorempixel.com/400/200/food/"
-  //     },
-  //     {
-  //         "content_type": "text",
-  //         "title": "看按鈕",
-  //         "payload": "Buttons",
-  //         "image_url": "https://lorempixel.com/400/200/food/"
-  //     }
-  // ]
+    if (typeof template['payload'] !== 'undefined') {
+      respons_message["attachment"] = template;
+    }
+    else {
+      respons_message["text"] = "這個還沒有實作!!!";
+      respons_message["quick_replies"] = [{
+          "content_type": "text",
+          "title": "看地圖",
+          "payload": "看地圖",
+          "image_url": "https://lorempixel.com/400/200/food/"
+        },
+        {
+          "content_type": "text",
+          "title": "看訊息範本",
+          "payload": "template",
+          "image_url": "https://lorempixel.com/400/200/food/"
+        },
+        {
+          "content_type": "text",
+          "title": "看按鈕",
+          "payload": "Buttons",
+          "image_url": "https://lorempixel.com/400/200/food/"
+        }
+      ]
+    }
+    return respons_message
 }

@@ -7,15 +7,18 @@ const postbackMaps = {
 
 // Handles messaging_postbacks events
 module.exports = function handlePostback(received_postback) {
+  console.log('> > post back');
   let respons_message;
 
   // Get the payload for the postback
   let payload = received_postback.payload;
+  console.log('> > handlePostback: ', received_postback.payload);
+
 
 
   respons_message = postbackMaps[payload]
   if (respons_message === undefined) {
-    respons_message = postback["other"]
+    respons_message = postbackMaps["other"]
   }
 
   respons_message["quick_replies"] = [{
