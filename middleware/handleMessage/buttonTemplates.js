@@ -67,22 +67,22 @@ module.exports = function(msg_text, respons_message) {
   }
   // else if (msg_text === "購買按鈕") {
   // }
-  else if (msg_text === "通話按鈕") {
-    const phoneNumberButton = {
-      "type": "phone_number",
-      "title": "聖凱的手機",
-      "payload": "0921026229"
-    }
-    template["payload"] = {
-      "template_type": "button",
-      "text": "通話按鈕(小心使用)",
-      "buttons": [
-        phoneNumberButton,
-        phoneNumberButton,
-        phoneNumberButton
-      ]
-    }
-  }
+  // else if (msg_text === "通話按鈕") {
+  //   const phoneNumberButton = {
+  //     "type": "phone_number",
+  //     "title": "聖凱的手機",
+  //     "payload": "0921026229"
+  //   }
+  //   template["payload"] = {
+  //     "template_type": "button",
+  //     "text": "通話按鈕(小心使用)",
+  //     "buttons": [
+  //       phoneNumberButton,
+  //       phoneNumberButton,
+  //       phoneNumberButton
+  //     ]
+  //   }
+  // }
 
   // else if (msg_text === "登入按鈕") {
   // }
